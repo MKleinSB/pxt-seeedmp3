@@ -1,0 +1,271 @@
+/* MakeCodeerweiterung für das Seeed Grove mp3 Modul mp3player
+* Originalpaket:
+* https://github.com/Mo-SW-Dev/pxt-mp3player
+* angepasst an V2 Core von M.KLein 9.11.20
+*/
+
+//% color=#0fbc11 icon="\uf120" block="Seeed mp3 V2"
+namespace mp3player {
+
+
+
+	/**************************************************************** 
+	 * Function Name: SpecifyMusicPlay
+	 * Description: Specify the music index to play, the index is decided by the input sequence of the music.
+	 * Parameters: index: the music index: 0-65535.
+	 * Return: none
+	 * @param index file number
+	****************************************************************/
+    //% blockId=playIndex
+    //% block="Play | File | %index"
+    export function playIndex(index: number) {
+        let buf = pins.createBuffer(8)
+        buf[0] = 0x7E
+        buf[1] = 0xFF
+        buf[2] = 0x06
+        buf[3] = 0x03
+        buf[4] = 0x00
+        buf[5] = (index >> 8) & 0xFF
+        buf[6] = index & 0xFF
+        buf[7] = 0xEF
+        serial.writeBuffer(buf)
+        basic.pause(10)
+    }
+
+
+
+    /*************************************************************
+     * Function Name: PlayMP3folder
+     * Description: Plays the music specified in the MP3 folder.
+     *              First create a folder named MP3. Then rename the music file to 0001.mp3,0002.mp3, and so on. Save these music files in the MP3 folder.
+     *              The name must be Decimal. 
+     * Parameters: index, the name of MP3 flie.
+     * Return: none
+     * @param index file number in folder MP3
+    **************************************************************/
+    //% blockId=playMP3Index
+    //% block="Play | File | %index | in Folder MP3"
+    export function playMP3Index(index: number) {
+        let buf = pins.createBuffer(8)
+        buf[0] = 0x7E
+        buf[1] = 0xFF
+        buf[2] = 0x06
+        buf[3] = 0x12
+        buf[4] = 0x00
+        buf[5] = (index >> 8) & 0xFF
+        buf[6] = index & 0xFF
+        buf[7] = 0xEF
+        serial.writeBuffer(buf)
+        basic.pause(10)
+    }
+
+    /**************************************************************** 
+     * Function Name: specifyFolderIndex
+     * Description: Specify the music index in the folder to play, the index is decided by the input sequence of the music.
+     * Parameters: folder: folder name, must be number;  index: the music index.
+     * Return: none
+     * @param folder folder number
+     * @param index file number
+    ****************************************************************/
+    //% blockId=specifyFolderIndex
+    //% block="In folder | %folder | Play File | %index "
+    export function specifyFolderIndex(folder: number, index: number)
+    {
+        let buf = pins.createBuffer(8)
+        buf[0] = 0x7E
+        buf[1] = 0xFF
+        buf[2] = 0x06
+        buf[3] = 0x0F
+        buf[4] = 0x00
+        buf[5] = folder & 0xFF
+        buf[6] = index & 0xFF
+        buf[7] = 0xEF
+        serial.writeBuffer(buf)
+        basic.pause(10)
+    }
+
+    /**************************************************************** 
+     * Function Name: pause
+     * Description: Pause the MP3 player.
+     * Parameters: none
+     * Return: none
+    ****************************************************************/
+    //% blockId=
+    //% block="pause"
+    export function pause()
+    {
+        let buf = pins.createBuffer(8)
+        buf[0] = 0x7E
+        buf[1] = 0xFF
+        buf[2] = 0x06
+        buf[3] = 0x0E
+        buf[4] = 0x00
+        buf[5] = 0x00
+        buf[6] = 0x00
+        buf[7] = 0xEF
+        serial.writeBuffer(buf)
+        basic.pause(20)
+    }
+
+    /**************************************************************** 
+     * Function Name: resume
+     * Description: Resume the MP3 player.
+     * Parameters: none
+     * Return: none
+    ****************************************************************/
+    //% blockId=resume
+    //% block="resume"
+    export function resume()
+    {
+        let buf = pins.createBuffer(8)
+        buf[0] = 0x7E
+        buf[1] = 0xFF
+        buf[2] = 0x06
+        buf[3] = 0x0D
+        buf[4] = 0x00
+        buf[5] = 0x00
+        buf[6] = 0x00
+        buf[7] = 0xEF
+        serial.writeBuffer(buf)
+        basic.pause(20)
+    }
+
+    /**************************************************************** 
+     * Function Name: PlayNext
+     * Description: Play the next song.
+     * Parameters: none
+     * Return: none
+    ****************************************************************/
+    //% blockId=playNext
+    //% block="Play next"
+    export function playNext()
+    {
+        let buf = pins.createBuffer(8)
+        buf[0] = 0x7E
+        buf[1] = 0xFF
+        buf[2] = 0x06
+        buf[3] = 0x01
+        buf[4] = 0x00
+        buf[5] = 0x00
+        buf[6] = 0x00
+        buf[7] = 0xEF
+        serial.writeBuffer(buf)
+        basic.pause(10)
+    }
+
+    /**************************************************************** 
+     * Function Name: PlayPrevious
+     * Description: Play the previous song.
+     * Parameters: none
+     * Return: none
+    ****************************************************************/
+    //% blockId=playPrevious
+    //% block="Play previous"
+    export function playPrevious()
+    {
+        let buf = pins.createBuffer(8)
+        buf[0] = 0x7E
+        buf[1] = 0xFF
+        buf[2] = 0x06
+        buf[3] = 0x02
+        buf[4] = 0x00
+        buf[5] = 0x00
+        buf[6] = 0x00
+        buf[7] = 0xEF
+        serial.writeBuffer(buf)
+        basic.pause(10)
+    }
+
+    /**************************************************************** 
+     * Function Name: PlayLoop
+     * Description: Play loop for all the songs.
+     * Parameters: none
+     * Return: none
+    ****************************************************************/
+    //% blockId=playLoop
+    //% block="Loop all"
+    export function playLoop()
+    {
+        let buf = pins.createBuffer(8)
+        buf[0] = 0x7E
+        buf[1] = 0xFF
+        buf[2] = 0x06
+        buf[3] = 0x11
+        buf[4] = 0x00
+        buf[5] = 0x00
+        buf[6] = 0x01
+        buf[7] = 0xEF
+        serial.writeBuffer(buf)
+        basic.pause(10)
+    }
+
+    /**************************************************************** 
+     * Function Name: SetVolume
+     * Description: Set the volume, the range is 0x00 to 0x1E.
+     * Parameters: volume: the range is 0x00 to 0x1E.
+     * Return: none
+     * @param volume volume level
+    ****************************************************************/
+    //% blockId=setVolume
+    //% block="Set volume to | %volume"
+    export function setVolume(volume: number)
+    {
+        let buf = pins.createBuffer(8)
+        buf[0] = 0x7E
+        buf[1] = 0xFF
+        buf[2] = 0x06
+        buf[3] = 0x06
+        buf[4] = 0x00
+        buf[5] = 0x00
+        buf[6] = volume & 0x1E
+        buf[7] = 0xEF
+        serial.writeBuffer(buf)
+        basic.pause(10)
+    }
+
+    /**************************************************************** 
+     * Function Name: IncreaseVolume
+     * Description: Increase the volume.
+     * Parameters: none
+     * Return: none
+    ****************************************************************/
+    //% blockId=increaseVolume
+    //% block="Volume up"
+    export function increaseVolume()
+    {
+        let buf = pins.createBuffer(8)
+        buf[0] = 0x7E
+        buf[1] = 0xFF
+        buf[2] = 0x06
+        buf[3] = 0x04
+        buf[4] = 0x00
+        buf[5] = 0x00
+        buf[6] = 0x00
+        buf[7] = 0xEF
+        serial.writeBuffer(buf)
+        basic.pause(10)
+    }
+
+    /**************************************************************** 
+     * Function Name: DecreaseVolume
+     * Description: Decrease the volume.
+     * Parameters: none
+     * Return: none
+    ****************************************************************/
+    //% blockId=decreaseVolume
+    //% block="Volume down"
+    export function decreaseVolume()
+    {
+        let buf = pins.createBuffer(8)
+        buf[0] = 0x7E
+        buf[1] = 0xFF
+        buf[2] = 0x06
+        buf[3] = 0x05
+        buf[4] = 0x00
+        buf[5] = 0x00
+        buf[6] = 0x00
+        buf[7] = 0xEF
+        serial.writeBuffer(buf)
+        basic.pause(10)
+    }
+}
